@@ -11,6 +11,8 @@
 		E526DD4D2BF1ED010005447F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E526DD4C2BF1ED010005447F /* ListViewController.swift */; };
 		E526DD522BF1ED030005447F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E526DD512BF1ED030005447F /* Assets.xcassets */; };
 		E526DD552BF1ED030005447F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E526DD532BF1ED030005447F /* LaunchScreen.storyboard */; };
+		E59D59E82BF3321E004D1CDD /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */; };
+		E59D59EA2BF348CE004D1CDD /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59E92BF348CE004D1CDD /* PostInfo.swift */; };
 		FF1C3874FB217B1E9443A36B /* Pods_PhotoDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DFEDE2597015728FFBBA6 /* Pods_PhotoDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +26,8 @@
 		E526DD512BF1ED030005447F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E526DD542BF1ED030005447F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E526DD562BF1ED030005447F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		E59D59E92BF348CE004D1CDD /* PostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,9 +82,11 @@
 			children = (
 				E526DD482BF1ED010005447F /* AppDelegate.swift */,
 				E526DD4C2BF1ED010005447F /* ListViewController.swift */,
+				E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */,
 				E526DD512BF1ED030005447F /* Assets.xcassets */,
 				E526DD532BF1ED030005447F /* LaunchScreen.storyboard */,
 				E526DD562BF1ED030005447F /* Info.plist */,
+				E59D59E92BF348CE004D1CDD /* PostInfo.swift */,
 			);
 			path = PhotoDiary;
 			sourceTree = "<group>";
@@ -201,6 +207,8 @@
 			files = (
 				E526DD4D2BF1ED010005447F /* ListViewController.swift in Sources */,
 				E526DD492BF1ED010005447F /* AppDelegate.swift in Sources */,
+				E59D59E82BF3321E004D1CDD /* ListTableViewCell.swift in Sources */,
+				E59D59EA2BF348CE004D1CDD /* PostInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
