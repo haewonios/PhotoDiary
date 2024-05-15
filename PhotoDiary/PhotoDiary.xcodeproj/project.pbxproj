@@ -13,6 +13,8 @@
 		E526DD552BF1ED030005447F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E526DD532BF1ED030005447F /* LaunchScreen.storyboard */; };
 		E59D59E82BF3321E004D1CDD /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */; };
 		E59D59EA2BF348CE004D1CDD /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59E92BF348CE004D1CDD /* PostInfo.swift */; };
+		E59D59EC2BF4A1A3004D1CDD /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59EB2BF4A1A3004D1CDD /* PostViewController.swift */; };
+		E59D59EE2BF4A1F0004D1CDD /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59ED2BF4A1F0004D1CDD /* EmptyView.swift */; };
 		FF1C3874FB217B1E9443A36B /* Pods_PhotoDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DFEDE2597015728FFBBA6 /* Pods_PhotoDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +30,8 @@
 		E526DD562BF1ED030005447F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		E59D59E92BF348CE004D1CDD /* PostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfo.swift; sourceTree = "<group>"; };
+		E59D59EB2BF4A1A3004D1CDD /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		E59D59ED2BF4A1F0004D1CDD /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,8 @@
 			children = (
 				E526DD482BF1ED010005447F /* AppDelegate.swift */,
 				E526DD4C2BF1ED010005447F /* ListViewController.swift */,
+				E59D59EB2BF4A1A3004D1CDD /* PostViewController.swift */,
+				E59D59ED2BF4A1F0004D1CDD /* EmptyView.swift */,
 				E59D59E72BF3321E004D1CDD /* ListTableViewCell.swift */,
 				E526DD512BF1ED030005447F /* Assets.xcassets */,
 				E526DD532BF1ED030005447F /* LaunchScreen.storyboard */,
@@ -209,6 +215,8 @@
 				E526DD492BF1ED010005447F /* AppDelegate.swift in Sources */,
 				E59D59E82BF3321E004D1CDD /* ListTableViewCell.swift in Sources */,
 				E59D59EA2BF348CE004D1CDD /* PostInfo.swift in Sources */,
+				E59D59EE2BF4A1F0004D1CDD /* EmptyView.swift in Sources */,
+				E59D59EC2BF4A1A3004D1CDD /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
