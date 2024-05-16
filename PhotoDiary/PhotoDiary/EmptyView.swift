@@ -57,6 +57,8 @@ class EmptyView: UIView {
     
     @objc
     func createPost() {
-        print("create post")
+        let postViewController = PostViewController()
+        postViewController.modalPresentationStyle = .fullScreen
+        self.window?.rootViewController?.present(postViewController, animated: true)
     }
 }
