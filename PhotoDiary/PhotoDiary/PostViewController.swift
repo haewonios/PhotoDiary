@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import AVFoundation
 
 class PostViewController: UIViewController {
     
     private lazy var imageView = UIImageView().then {
         $0.backgroundColor = .systemGray
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pickPhoto))
+        $0.addGestureRecognizer(tapGesture)
+        $0.isUserInteractionEnabled = true
     }
     
     private lazy var titleTextField = UITextField().then {
@@ -64,9 +69,15 @@ class PostViewController: UIViewController {
         buildLayout()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardObserver()
+    }
+    
     func configureUI() {
         self.view.backgroundColor = .white
+        titleTextField.delegate = self
         contentTextView.delegate = self
+        setKeyboardObserver()
     }
     
     func buildLayout() {
@@ -92,7 +103,7 @@ class PostViewController: UIViewController {
         contentTextView.snp.makeConstraints {
             $0.top.equalTo(titleTextField.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(30)
-            $0.height.equalTo(200)
+            $0.height.equalTo(view.frame.height*0.25)
         }
         
         buttonStack.snp.makeConstraints {
@@ -101,9 +112,37 @@ class PostViewController: UIViewController {
         }
     }
     
+    func setKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func removeKeyboardObserver() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    func keyboardWillShow(notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        
+        if view.frame.origin.y == 0 {
+            view.frame.origin.y -= keyboardHeight
+        }
+    }
+    
+    @objc
+    func keyboardWillHide() {
+        if view.frame.origin.y != 0 {
+            view.frame.origin.y = 0
+        }
+    }
+    
     @objc
     func cancelTapped() {
-        
         let alert = UIAlertController(title: "취소", message: "일기 작성을 취소하시겠어요?", preferredStyle: .alert)
         
         let cancel = UIAlertAction(title: "아니오", style: .cancel)
@@ -118,7 +157,7 @@ class PostViewController: UIViewController {
     }
 }
 
-extension PostViewController: UITextViewDelegate {
+extension PostViewController: UITextViewDelegate, UITextFieldDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "내용을 입력해주세요"
@@ -130,6 +169,37 @@ extension PostViewController: UITextViewDelegate {
         if textView.textColor == .lightGray {
             textView.text = nil
             textView.textColor = .black
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension PostViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    @objc
+    func pickPhoto() {
+        print("uiimageview tapped")
+        checkAuth()
+//        let imagePicker = UIImagePickerController()
+//        imagePicker.delegate = self
+//        imagePicker.sourceType = .camera
+//        present(imagePicker, animated: true)
+    }
+    
+    func checkAuth() {
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            if granted {
+                print("access ok")
+            } else {
+                print("access denied")
+            }
         }
     }
 }
