@@ -15,6 +15,7 @@
 		E59D59EA2BF348CE004D1CDD /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59E92BF348CE004D1CDD /* PostInfo.swift */; };
 		E59D59EC2BF4A1A3004D1CDD /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59EB2BF4A1A3004D1CDD /* PostViewController.swift */; };
 		E59D59EE2BF4A1F0004D1CDD /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59D59ED2BF4A1F0004D1CDD /* EmptyView.swift */; };
+		E5F766EC2BF8EB8800B287E9 /* debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E5F766EB2BF8EB8800B287E9 /* debug.xcconfig */; };
 		FF1C3874FB217B1E9443A36B /* Pods_PhotoDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C37DFEDE2597015728FFBBA6 /* Pods_PhotoDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		E59D59E92BF348CE004D1CDD /* PostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfo.swift; sourceTree = "<group>"; };
 		E59D59EB2BF4A1A3004D1CDD /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		E59D59ED2BF4A1F0004D1CDD /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		E5F766EB2BF8EB8800B287E9 /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		E526DD3C2BF1ED010005447F = {
 			isa = PBXGroup;
 			children = (
+				E5F766E92BF74F3300B287E9 /* config */,
 				E526DD472BF1ED010005447F /* PhotoDiary */,
 				E526DD462BF1ED010005447F /* Products */,
 				8E483B7F766BD20DC5FC3423 /* Pods */,
@@ -95,6 +98,14 @@
 				E59D59E92BF348CE004D1CDD /* PostInfo.swift */,
 			);
 			path = PhotoDiary;
+			sourceTree = "<group>";
+		};
+		E5F766E92BF74F3300B287E9 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				E5F766EB2BF8EB8800B287E9 /* debug.xcconfig */,
+			);
+			path = config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E526DD552BF1ED030005447F /* LaunchScreen.storyboard in Resources */,
+				E5F766EC2BF8EB8800B287E9 /* debug.xcconfig in Resources */,
 				E526DD522BF1ED030005447F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,12 +362,14 @@
 		};
 		E526DD5A2BF1ED030005447F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09CFBD8C7686D6DAE171A23B /* Pods-PhotoDiary.debug.xcconfig */;
+			baseConfigurationReference = E5F766EB2BF8EB8800B287E9 /* debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoDiary/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -370,6 +384,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.haewon.PhotoDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -382,8 +397,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoDiary/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -398,6 +415,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.haewon.PhotoDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
