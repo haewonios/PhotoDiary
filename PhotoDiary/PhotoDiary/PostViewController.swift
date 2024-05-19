@@ -187,19 +187,53 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
     func pickPhoto() {
         print("uiimageview tapped")
         checkAuth()
-//        let imagePicker = UIImagePickerController()
-//        imagePicker.delegate = self
-//        imagePicker.sourceType = .camera
-//        present(imagePicker, animated: true)
     }
     
     func checkAuth() {
-        AVCaptureDevice.requestAccess(for: .video) { granted in
-            if granted {
-                print("access ok")
-            } else {
-                print("access denied")
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch status {
+        case .authorized:
+            print("authorized")
+            openCamera()
+        case .denied:
+            print("denied")
+            openSettings()
+        case .notDetermined:
+            print("not determined")
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    print("access ok")
+                    self.openCamera()
+                } else {
+                    print("access denied")
+                    self.openSettings()
+                }
             }
+        default:
+            print("default")
         }
+    }
+    
+    func openCamera() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true)
+    }
+    
+    func openSettings() {
+        let alert = UIAlertController(title: "설정", message: "카메라 접근 허용이 필요합니다. 설정으로 이동하시겠어요?", preferredStyle: .alert)
+        
+        let confirm = UIAlertAction(title: "예", style: .default) { _ in
+            let url = URL(string: UIApplication.openSettingsURLString)!
+            UIApplication.shared.open(url)
+        }
+        let cancel = UIAlertAction(title: "아니오", style: .cancel)
+        
+        alert.addAction(confirm)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
     }
 }
