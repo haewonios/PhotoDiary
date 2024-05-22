@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import PhotosUI
 
 class PostViewController: UIViewController {
     
@@ -182,14 +183,57 @@ extension PostViewController: UITextViewDelegate, UITextFieldDelegate {
     }
 }
 
-extension PostViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+extension PostViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate {
     @objc
     func pickPhoto() {
         print("uiimageview tapped")
-        checkAuth()
+        
+        let alert = UIAlertController(title: nil, message: "사진을 등록해주세요.", preferredStyle: .actionSheet)
+        let album = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
+            self.checkAlbumAuth()
+        }
+        let camera = UIAlertAction(title: "카메라로 촬영하기", style: .default) { _ in
+            self.checkCameraAuth()
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(album)
+        alert.addAction(camera)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
     }
     
-    func checkAuth() {
+    func checkAlbumAuth() {
+        let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        
+        switch status {
+        case .authorized:
+            print("authorized")
+            openAlbum()
+        case .denied:
+            print("denied")
+            openSettings("앨범")
+        case .notDetermined:
+            print("not determined")
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { state in
+                if state == .authorized {
+                    print("AUTHORIZED")
+                } else {
+                    print("state: \(state)")
+                }
+            }
+        case .limited:
+            print("limited")
+            openAlbum()
+        case .restricted:
+            print("restricted")
+        @unknown default:
+            fatalError()
+        }
+    }
+    
+    func checkCameraAuth() {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         
         switch status {
@@ -198,7 +242,7 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
             openCamera()
         case .denied:
             print("denied")
-            openSettings()
+            openSettings("카메라")
         case .notDetermined:
             print("not determined")
             AVCaptureDevice.requestAccess(for: .video) { granted in
@@ -207,7 +251,7 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
                     self.openCamera()
                 } else {
                     print("access denied")
-                    self.openSettings()
+                    self.openSettings("카메라")
                 }
             }
         default:
@@ -219,11 +263,23 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
         present(imagePicker, animated: true)
     }
     
-    func openSettings() {
-        let alert = UIAlertController(title: "설정", message: "카메라 접근 허용이 필요합니다. 설정으로 이동하시겠어요?", preferredStyle: .alert)
+    func openAlbum() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .images
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        picker.isEditing = true
+        present(picker, animated: true)
+    }
+    
+    func openSettings(_ name: String) {
+        let alert = UIAlertController(title: "설정", message: "\(name) 접근 허용이 필요합니다. 설정으로 이동하시겠어요?", preferredStyle: .alert)
         
         let confirm = UIAlertAction(title: "예", style: .default) { _ in
             let url = URL(string: UIApplication.openSettingsURLString)!
@@ -235,5 +291,28 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
         alert.addAction(cancel)
         
         self.present(alert, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.imageView.image = image
+        }
+        
+        picker.dismiss(animated: true)
+    }
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) else {
+            picker.dismiss(animated: true)
+            return
+        }
+        
+        let _ = itemProvider.loadObject(ofClass: UIImage.self) { image, _ in
+            DispatchQueue.main.async {
+                guard let image = image as? UIImage else { return }
+                self.imageView.image = image
+            }
+        }
+        picker.dismiss(animated: true)
     }
 }
