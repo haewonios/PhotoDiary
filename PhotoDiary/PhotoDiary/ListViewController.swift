@@ -31,6 +31,11 @@ class ListViewController: UIViewController {
         buildLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadPostData()
+    }
+    
     func configureUI() {
         self.view.backgroundColor = .white
         
@@ -66,6 +71,24 @@ class ListViewController: UIViewController {
         emptyView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.leading.bottom.trailing.equalToSuperview()
+        }
+    }
+    
+    func loadPostData() {
+        print("🍊 load data start...")
+        guard let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        let path = documentURL.appendingPathComponent("postData.json")
+        print("🍊 load data path - \(path)")
+        let decoder = JSONDecoder()
+        
+        do {
+            let jsonString = try String(contentsOf: path)
+            guard let data = jsonString.data(using: .utf8), let jsonData = try? decoder.decode(PostInfo.self, from: data) else {
+                return
+            }
+            print("🍊 load json data - \(jsonData)")
+        } catch {
+            print("🐸 ERROR: load data - \(error)")
         }
     }
 }

@@ -11,6 +11,8 @@ import PhotosUI
 
 class PostViewController: UIViewController {
     
+    // MARK: - 화면 요소
+    
     private lazy var imageView = UIImageView().then {
         $0.backgroundColor = .systemGray
         
@@ -52,7 +54,7 @@ class PostViewController: UIViewController {
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         $0.configuration = configuration
         
-        $0.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(cancelDidTap), for: .touchUpInside)
     }
     
     private lazy var registerButton = UIButton().then {
@@ -61,8 +63,11 @@ class PostViewController: UIViewController {
         $0.layer.borderWidth = 1
         $0.setTitle("등록", for: .normal)
         $0.setTitleColor(UIColor.systemBlue, for: .normal)
+        
+        $0.addTarget(self, action: #selector(registerDidTap), for: .touchUpInside)
     }
     
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +78,8 @@ class PostViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         removeKeyboardObserver()
     }
+    
+    // MARK: - 화면 그리기
     
     func configureUI() {
         self.view.backgroundColor = .white
@@ -113,6 +120,8 @@ class PostViewController: UIViewController {
         }
     }
     
+    // MARK: - 키보드
+    
     func setKeyboardObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -143,9 +152,8 @@ class PostViewController: UIViewController {
     }
     
     @objc
-    func cancelTapped() {
+    func cancelDidTap() {
         let alert = UIAlertController(title: "취소", message: "일기 작성을 취소하시겠어요?", preferredStyle: .alert)
-        
         let cancel = UIAlertAction(title: "아니오", style: .cancel)
         let confirm = UIAlertAction(title: "예", style: .default) { _ in
             self.dismiss(animated: true)
@@ -156,7 +164,24 @@ class PostViewController: UIViewController {
         
         self.present(alert, animated: true)
     }
+    
+    @objc
+    func registerDidTap() {
+        guard let todayImage = imageView.image, let todayTitle = titleTextField.text, let todayContent = contentTextView.text else { return }
+        if !todayTitle.isEmpty {
+            saveData(image: todayImage, title: todayTitle, content: todayContent)
+            self.dismiss(animated: true)
+        } else {
+            let alert = UIAlertController(title: "안내", message: "제목을 입력해주세요.", preferredStyle: .alert)
+            let confirm = UIAlertAction(title: "확인", style: .default)
+            alert.addAction(confirm)
+            
+            self.present(alert, animated: true)
+        }
+    }
 }
+
+// MARK: - delegate
 
 extension PostViewController: UITextViewDelegate, UITextFieldDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -182,6 +207,8 @@ extension PostViewController: UITextViewDelegate, UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - 이미지
 
 extension PostViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate {
     @objc
@@ -314,5 +341,48 @@ extension PostViewController: UINavigationControllerDelegate, UIImagePickerContr
             }
         }
         picker.dismiss(animated: true)
+    }
+    
+    func saveImage(name: String, image: UIImage) {
+        let fileManager = FileManager.default
+        guard let documentURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let fileURL = documentURL.appendingPathComponent("\(name).jpeg")
+        guard let data = image.jpegData(compressionQuality: 1) else { return }
+        
+        do {
+            try data.write(to: fileURL)
+            print("🍊 save image path - \(fileURL)")
+        } catch {
+            print("🐸 ERROR: save image - \(error)")
+        }
+    }
+    
+    func saveData(image: UIImage, title: String, content: String) {
+        saveImage(name: title, image: image)
+        
+        guard let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        let path = documentURL.appendingPathComponent("postData.json")
+        
+        let postModel = PostInfo(image: "\(title).jpeg", title: title, contents: content)
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(postModel), let jsonString = String(data: data, encoding: .utf8) else { return }
+        print("🍊 save json data - \(jsonString)")
+        
+        do {
+            try jsonString.write(to: path, atomically: true, encoding: .utf8)
+            print("🍊 save json path - \(path)")
+        } catch {
+            print("🐸 ERROR: save data - \(error)")
+        }
+    }
+}
+
+extension UITextField {
+    var isEmpty: Bool {
+        if let text = self.text, !text.isEmpty {
+             return false
+        }
+        return true
     }
 }

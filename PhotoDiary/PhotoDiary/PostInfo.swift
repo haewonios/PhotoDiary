@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostInfo {
+struct PostInfo: Codable {
     let image: String
     let title: String
     let contents: String
